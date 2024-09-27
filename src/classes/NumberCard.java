@@ -17,14 +17,9 @@ public class NumberCard extends Card {
         return this.color.equals(card.getColor()) || this.number == card.getNumber();
     }
 
-    // @Override
-    // public String toString() {
-    //     return "NumberCard [color=" + color + ", number=" + number + "]";
-    // }
-
     @Override
     public String toString() {
-        return color.name() + " " + number;
+        return color.getColorCode() + color.name() + " " + number + color.resetCode();
     }
 
     @Override

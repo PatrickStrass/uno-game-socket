@@ -21,7 +21,7 @@ public class ActionCard extends Card {
 
     @Override
     public String toString() {
-        return color.name() + " " + action.name();
+        return color.getColorCode() + color.name() + " " + action.name() + color.resetCode();
     }
 
     @Override
