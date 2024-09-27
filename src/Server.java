@@ -77,6 +77,7 @@ public class Server {
                     if(actionCard.getAction().equals(Action.DRAW_2)) {
                         ClientHandler nextPlayer = players.get((currentPlayer + 1) % 2);
 
+                        broadcast("Player " + currentPlayer + " drew 2 cards\n");
                         nextPlayer.addCard(deck.drawCard());
                         nextPlayer.addCard(deck.drawCard());
                     } else if(actionCard.getAction().equals(Action.REVERSE)) {
