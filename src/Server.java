@@ -53,7 +53,7 @@ public class Server {
             currentCard = deck.drawCard();
         }
 
-        broadcast("Game started!\nFirst card is " + currentCard + "\n");
+        broadcast("Game started!\nFirst card is " + currentCard.coloredString() + "\n");
 
         while(true) {
             ClientHandler player = players.get(currentPlayer);
@@ -64,7 +64,7 @@ public class Server {
             if (playedCard != null && playedCard.matches(currentCard)) {
                 currentCard = playedCard;
 
-                broadcast("Player " + (currentPlayer + 1) + " played " + currentCard + "\n");
+                broadcast("Player " + (currentPlayer + 1) + " played " + currentCard.coloredString() + "\n");
 
                 if(player.hasWon()) {
                     broadcast("Player " + (currentPlayer + 1) + " has won!");
@@ -77,7 +77,7 @@ public class Server {
                     if(actionCard.getAction().equals(Action.DRAW_2)) {
                         ClientHandler nextPlayer = players.get((currentPlayer + 1) % 2);
 
-                        broadcast("Player " + currentPlayer + " drew 2 cards\n");
+                        broadcast("Player " + (currentPlayer + 1) + " drew 2 cards\n");
                         nextPlayer.addCard(deck.drawCard());
                         nextPlayer.addCard(deck.drawCard());
                     } else if(actionCard.getAction().equals(Action.REVERSE)) {
@@ -89,7 +89,8 @@ public class Server {
                     WildCard wildCard = (WildCard) playedCard;
 
                     if(wildCard.getWild().equals(Wild.WILD)) {
-                        player.sendMessage("Your turn:\nChoose a color");
+                        // player.sendMessage("Your turn:\nChoose a color");
+                        player.sendMessage("Choose a color");
                         Color selectedColor = player.chooseColor();
                         currentCard = new NumberCard(Type.NUMBER, selectedColor, -1);
                     } else {
@@ -122,7 +123,6 @@ public class Server {
 
             // currentPlayer = (currentPlayer + 1) % 2;
         }
-
         closeConnections();
     }
 

@@ -19,6 +19,10 @@ public class NumberCard extends Card {
 
     @Override
     public String toString() {
+        return color.name() + " " + number;
+    }
+
+    public String coloredString() {
         return color.getColorCode() + color.name() + " " + number + color.resetCode();
     }
 

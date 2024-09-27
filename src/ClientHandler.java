@@ -41,7 +41,7 @@ public class ClientHandler extends Thread {
 
     public void showHand() {
         for (Card card : hand) {
-            sendMessage(card.toString());
+            sendMessage(card.coloredString());
         }
 
         sendMessage("");
@@ -64,7 +64,7 @@ public class ClientHandler extends Thread {
         }
 
         for(Card card : hand) {
-            if(card.toString().contains(response.toUpperCase())) {
+            if(card.toString().equalsIgnoreCase(response)) {
                 hand.remove(card);
                 
                 return card;
@@ -77,6 +77,7 @@ public class ClientHandler extends Thread {
 
     public Color chooseColor() throws IOException {
         sendMessage("Type a color: ");
+        sendMessage("Your turn:");
         String response = input.readLine().toUpperCase();
         List<Color> colors = new ArrayList<>(Arrays.asList(Color.values()));
 

@@ -18,6 +18,7 @@ public abstract class Card {
         return type;
     }
 
+    public abstract String coloredString();
 
     public abstract boolean matches(Card card);
 }

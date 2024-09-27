@@ -17,6 +17,11 @@ public class WildCard extends Card {
     }
 
     @Override
+    public String coloredString() {
+        return this.toString();
+    }
+
+    @Override
     public boolean matches(Card card) {
         return true;
     }

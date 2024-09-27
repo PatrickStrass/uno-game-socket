@@ -16,6 +16,11 @@ public class ActionCard extends Card {
 
     @Override
     public String toString() {
+        return color.name() + " " + action.name();
+    }
+
+    @Override
+    public String coloredString() {
         return color.getColorCode() + color.name() + " " + action.name() + color.resetCode();
     }
 
@@ -24,6 +29,8 @@ public class ActionCard extends Card {
         if(card instanceof NumberCard) {
             NumberCard numberCard = (NumberCard) card;
             return this.color.equals(numberCard.getColor());
+        } else if(card instanceof WildCard) {
+            return true;
         }
         return false; 
     }
