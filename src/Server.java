@@ -53,17 +53,18 @@ public class Server {
             currentCard = deck.drawCard();
         }
 
-        broadcast("Game started!\nFirst card is " + currentCard);
+        broadcast("Game started!\nFirst card is " + currentCard + "\n");
 
         while(true) {
             ClientHandler player = players.get(currentPlayer);
-            player.sendMessage("Your turn\nCurrent card is " + currentCard);
+            // player.sendMessage("Your turn\nCurrent card is " + currentCard);
             Card playedCard = player.playCard();
+            //player.sendMessage("Your turn");
 
             if (playedCard != null && playedCard.matches(currentCard)) {
                 currentCard = playedCard;
 
-                broadcast("Player " + (currentPlayer + 1) + " played " + currentCard);
+                broadcast("Player " + (currentPlayer + 1) + " played " + currentCard + "\n");
 
                 if(player.hasWon()) {
                     broadcast("Player " + (currentPlayer + 1) + " has won!");
@@ -83,15 +84,15 @@ public class Server {
                     } else if(actionCard.getAction().equals(Action.SKIP)) {
                         currentPlayer = (currentPlayer + 1) % 2; 
                     }
-                } else {
+                } else if(playedCard instanceof WildCard) {
                     WildCard wildCard = (WildCard) playedCard;
 
                     if(wildCard.getWild().equals(Wild.WILD)) {
-                        player.sendMessage("Your turn\nChoose a color");
+                        player.sendMessage("Your turn:\nChoose a color");
                         Color selectedColor = player.chooseColor();
                         currentCard = new NumberCard(Type.NUMBER, selectedColor, -1);
                     } else {
-                        player.sendMessage("Your turn\nChoose a color");
+                        player.sendMessage("Your turn:\nChoose a color");
                         Color selectedColor = player.chooseColor();
                         currentCard = new NumberCard(Type.NUMBER, selectedColor, -1);
 

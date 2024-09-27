@@ -25,7 +25,7 @@ public class ClientHandler extends Thread {
     @Override
     public void run() {
         try {
-            output.println("Welcome to Uno");
+            output.println("Welcome to Uno\n");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -34,16 +34,34 @@ public class ClientHandler extends Thread {
     public void getInitialCards(List<Card> cards) {
         hand.addAll(cards);
 
-        // sendMessage("Your initial hand: " + hand);
         sendMessage("Your initial hand:");
         
         for (Card card : hand) {
             sendMessage(card.toString());
         }
+
+        sendMessage("");
     }
 
+    public void showHand() {
+        sendMessage("Your hand:");
+
+        for (Card card : hand) {
+            sendMessage(card.toString());
+        }
+
+        sendMessage("");
+    }
+
+    public void info() {
+        System.out.println("Player " + socket.getInetAddress() + " has " + hand.size() + " cards left");
+    }   
+
     public Card playCard() throws IOException {
+        showHand();
         sendMessage("Enter a card to play or type 'draw' to draw a card: ");
+
+        sendMessage("Your turn:");
         String response = input.readLine();
 
         if(response.equalsIgnoreCase("draw")) {

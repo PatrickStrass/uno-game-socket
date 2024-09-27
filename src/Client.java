@@ -20,7 +20,7 @@ public class Client {
         while((serverMessage = input.readLine()) != null) {
             System.out.println("Server: " + serverMessage);
 
-            if(serverMessage.contains("Your turn")) {
+            if(serverMessage.contains("Your turn:")) {
                 String playerResponse = console.readLine();
                 output.println(playerResponse);
             }
