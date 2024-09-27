@@ -14,11 +14,6 @@ public class ActionCard extends Card {
         this.color = color;
     }
 
-    // @Override
-    // public String toString() {
-    //     return "ActionCard [action=" + action + ", color=" + color + "]";
-    // }
-
     @Override
     public String toString() {
         return color.getColorCode() + color.name() + " " + action.name() + color.resetCode();

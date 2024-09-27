@@ -34,18 +34,12 @@ public class ClientHandler extends Thread {
     public void getInitialCards(List<Card> cards) {
         hand.addAll(cards);
 
-        sendMessage("Your initial hand:");
-        
-        for (Card card : hand) {
-            sendMessage(card.toString());
-        }
-
-        sendMessage("");
+        // Uncomment this section if you want to see your initial cards when the game starts
+        // sendMessage("Your initial hand:");
+        // showHand();
     }
 
     public void showHand() {
-        sendMessage("Your hand:");
-
         for (Card card : hand) {
             sendMessage(card.toString());
         }
@@ -58,6 +52,7 @@ public class ClientHandler extends Thread {
     }   
 
     public Card playCard() throws IOException {
+        sendMessage("Your hand:");
         showHand();
         sendMessage("Enter a card to play or type 'draw' to draw a card: ");
 
@@ -69,14 +64,14 @@ public class ClientHandler extends Thread {
         }
 
         for(Card card : hand) {
-            if(card.toString().equalsIgnoreCase(response)) { //revisar
+            if(card.toString().contains(response.toUpperCase())) {
                 hand.remove(card);
                 
                 return card;
             }
         }
 
-        sendMessage("Invalid card");
+        sendMessage("Invalid card\n");
         return playCard();
     }
 
@@ -89,8 +84,7 @@ public class ClientHandler extends Thread {
             return Color.valueOf(response);
         }
     
-        sendMessage("Invalid color");
-        
+        sendMessage("Invalid color\n");
         return chooseColor();
     }
 

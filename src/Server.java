@@ -35,7 +35,7 @@ public class Server {
             startGame();
         }
 
-        // serverSocket.close();
+        serverSocket.close();
     }
 
     private static void startGame() throws IOException {
@@ -111,6 +111,7 @@ public class Server {
                 Card drawnCard = deck.drawCard();
                 player.addCard(drawnCard); 
                 player.sendMessage("You drew a card " + drawnCard);
+                broadcast("Player " + (currentPlayer + 1) + " draw a card\n");
 
                 currentPlayer = (currentPlayer + 1) % 2;
             } else {

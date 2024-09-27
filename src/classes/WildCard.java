@@ -11,11 +11,6 @@ public class WildCard extends Card {
         this.wild = wild;
     }
 
-    // @Override
-    // public String toString() {
-    //     return "WildCard [wild=" + wild + "]";
-    // }
-
     @Override
     public String toString() {
         return wild.name();
