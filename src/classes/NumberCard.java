@@ -31,6 +31,9 @@ public class NumberCard extends Card {
         if(card instanceof NumberCard) {
             NumberCard numberCard = (NumberCard) card;
             return this.color.equals(numberCard.getColor()) || (this.number == numberCard.getNumber());
+        } else if(card instanceof ActionCard) {
+            ActionCard actionCard = (ActionCard) card;
+            return this.color.equals(actionCard.getColor());
         }
         return false;     
     }

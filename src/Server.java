@@ -77,7 +77,7 @@ public class Server {
                     if(actionCard.getAction().equals(Action.DRAW_2)) {
                         ClientHandler nextPlayer = players.get((currentPlayer + 1) % 2);
 
-                        broadcast("Player " + (currentPlayer + 1) + " drew 2 cards\n");
+                        broadcast("Player " + ((currentPlayer + 1) % 2) + " drew 2 cards\n");
                         nextPlayer.addCard(deck.drawCard());
                         nextPlayer.addCard(deck.drawCard());
                     } else if(actionCard.getAction().equals(Action.REVERSE)) {
@@ -112,8 +112,8 @@ public class Server {
             } else if(playedCard == null) {
                 Card drawnCard = deck.drawCard();
                 player.addCard(drawnCard); 
-                player.sendMessage("You drew a card " + drawnCard);
-                broadcast("Player " + (currentPlayer + 1) + " draw a card\n");
+                player.sendMessage("You drew a card " + drawnCard.coloredString());
+                broadcast("Player " + (currentPlayer + 1) + " drew a card\n");
 
                 currentPlayer = (currentPlayer + 1) % 2;
             } else {
