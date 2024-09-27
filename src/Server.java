@@ -16,6 +16,7 @@ import classes.enums.Wild;
 public class Server {
     private static final int PORT = 4000;
     private static final int MIN_NUMBER_PLAYERS = 2;
+    private static int rotationWay = 1; // TODO implement change of rotation when necessary
     private static ArrayList<ClientHandler> players = new ArrayList<>();
     private static Deck deck = new Deck();
 
@@ -57,13 +58,10 @@ public class Server {
 
         while(true) {
             ClientHandler player = players.get(currentPlayer);
-            // player.sendMessage("Your turn\nCurrent card is " + currentCard);
             Card playedCard = player.playCard();
-            //player.sendMessage("Your turn");
 
             if (playedCard != null && playedCard.matches(currentCard)) {
                 currentCard = playedCard;
-
                 broadcast("Player " + (currentPlayer + 1) + " played " + currentCard.coloredString() + "\n");
 
                 if(player.hasWon()) {
@@ -76,12 +74,13 @@ public class Server {
 
                     if(actionCard.getAction().equals(Action.DRAW_2)) {
                         ClientHandler nextPlayer = players.get((currentPlayer + 1) % 2);
+                        broadcast("Player " + (currentPlayer + 2) + " drew 2 cards\n");
 
-                        broadcast("Player " + ((currentPlayer + 1) % 2) + " drew 2 cards\n");
                         nextPlayer.addCard(deck.drawCard());
                         nextPlayer.addCard(deck.drawCard());
                     } else if(actionCard.getAction().equals(Action.REVERSE)) {
                         //TODO when there is more than two players
+                        currentCard = new NumberCard(Type.NUMBER, actionCard.getColor(), -1);
                     } else if(actionCard.getAction().equals(Action.SKIP)) {
                         currentPlayer = (currentPlayer + 1) % 2; 
                     }
@@ -89,13 +88,12 @@ public class Server {
                     WildCard wildCard = (WildCard) playedCard;
 
                     if(wildCard.getWild().equals(Wild.WILD)) {
-                        // player.sendMessage("Your turn:\nChoose a color");
-                        player.sendMessage("Choose a color");
                         Color selectedColor = player.chooseColor();
+                        broadcast("Player " + (currentPlayer + 1) + " selected the color " + selectedColor.getColorCode() + selectedColor + selectedColor.resetCode() + "\n");
                         currentCard = new NumberCard(Type.NUMBER, selectedColor, -1);
                     } else {
-                        player.sendMessage("Your turn:\nChoose a color");
                         Color selectedColor = player.chooseColor();
+                        broadcast("Player " + (currentPlayer + 1) + " selected the color " + selectedColor.getColorCode() + selectedColor + selectedColor.resetCode() + "\n");
                         currentCard = new NumberCard(Type.NUMBER, selectedColor, -1);
 
                         int nextPlayer = (currentPlayer + 1) % 2;
@@ -118,7 +116,7 @@ public class Server {
                 currentPlayer = (currentPlayer + 1) % 2;
             } else {
                 player.addCard(playedCard);
-                player.sendMessage("The card you played does not match");
+                player.sendMessage("The card you played does not match\n");
             }
 
             // currentPlayer = (currentPlayer + 1) % 2;
