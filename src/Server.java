@@ -40,14 +40,12 @@ public class Server {
     }
 
     private static void startGame() throws IOException {
-        // Deal cards to players
         for (ClientHandler player : players) {
             player.getInitialCards(deck.drawInitialCards());
         }
 
-        // Main game loop
         int currentPlayer = 0;
-        Card currentCard = deck.drawCard(); // Start with a random card from the deck
+        Card currentCard = deck.drawCard();
 
         while(currentCard.getType().equals(Type.ACTION) || currentCard.getType().equals(Type.WILD)) {
             deck.getCards().add(deck.getCards().size() - 1, currentCard);
@@ -74,13 +72,13 @@ public class Server {
 
                     if(actionCard.getAction().equals(Action.DRAW_2)) {
                         ClientHandler nextPlayer = players.get((currentPlayer + 1) % 2);
-                        broadcast("Player " + (currentPlayer + 2) + " drew 2 cards\n");
+                        broadcast("Player " + ((currentPlayer + 1) % MIN_NUMBER_PLAYERS) + " drew 2 cards\n");
 
                         nextPlayer.addCard(deck.drawCard());
                         nextPlayer.addCard(deck.drawCard());
                     } else if(actionCard.getAction().equals(Action.REVERSE)) {
                         //TODO when there is more than two players
-                        currentCard = new NumberCard(Type.NUMBER, actionCard.getColor(), -1);
+                        // currentCard = new NumberCard(Type.NUMBER, actionCard.getColor(), -1);
                     } else if(actionCard.getAction().equals(Action.SKIP)) {
                         currentPlayer = (currentPlayer + 1) % 2; 
                     }
@@ -93,6 +91,7 @@ public class Server {
                         currentCard = new NumberCard(Type.NUMBER, selectedColor, -1);
                     } else {
                         Color selectedColor = player.chooseColor();
+                        broadcast("Player " + (((currentPlayer + 1) % 2) + 1) + " drew 4 cards" );
                         broadcast("Player " + (currentPlayer + 1) + " selected the color " + selectedColor.getColorCode() + selectedColor + selectedColor.resetCode() + "\n");
                         currentCard = new NumberCard(Type.NUMBER, selectedColor, -1);
 
