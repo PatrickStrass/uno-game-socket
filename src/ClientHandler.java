@@ -57,7 +57,7 @@ public class ClientHandler extends Thread {
         sendMessage("Enter a card to play or type 'draw' to draw a card: ");
 
         sendMessage("Your turn:");
-        String response = input.readLine();
+        String response = input.readLine().trim();
 
         if(response.equalsIgnoreCase("draw")) {
             return null;
