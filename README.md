@@ -1,18 +1,11 @@
-## Getting Started
+# uno-game-socket
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Play Uno via terminal in a client/server architecture based application using sockets with 2 or more players
 
-## Folder Structure
+## Support
 
-The workspace contains two folders by default, where:
+- Make sure that the port the server is running is available which is by default the port 4000 or change it as you wish
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+- Edit the number of clients in the MIN_NUMBER_PLAYERS, by default it's 3
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+- Run the server first and then the clients
