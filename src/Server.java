@@ -71,8 +71,8 @@ public class Server {
                     ActionCard actionCard = (ActionCard) playedCard;
 
                     if(actionCard.getAction().equals(Action.DRAW_2)) {
-                        ClientHandler nextPlayer = players.get((currentPlayer + 1) % 2);
-                        broadcast("Player " + ((currentPlayer + 1) % MIN_NUMBER_PLAYERS) + " drew 2 cards\n");
+                        ClientHandler nextPlayer = players.get((currentPlayer + 1) % MIN_NUMBER_PLAYERS);
+                        broadcast("Player " + (((currentPlayer + 1) % MIN_NUMBER_PLAYERS) + 1) + " drew 2 cards\n");
 
                         nextPlayer.addCard(deck.drawCard());
                         nextPlayer.addCard(deck.drawCard());
@@ -80,7 +80,7 @@ public class Server {
                         //TODO when there is more than two players
                         // currentCard = new NumberCard(Type.NUMBER, actionCard.getColor(), -1);
                     } else if(actionCard.getAction().equals(Action.SKIP)) {
-                        currentPlayer = (currentPlayer + 1) % 2; 
+                        currentPlayer = (currentPlayer + 1) % MIN_NUMBER_PLAYERS; 
                     }
                 } else if(playedCard instanceof WildCard) {
                     WildCard wildCard = (WildCard) playedCard;
@@ -91,11 +91,11 @@ public class Server {
                         currentCard = new NumberCard(Type.NUMBER, selectedColor, -1);
                     } else {
                         Color selectedColor = player.chooseColor();
-                        broadcast("Player " + (((currentPlayer + 1) % 2) + 1) + " drew 4 cards" );
+                        broadcast("Player " + (((currentPlayer + 1) % MIN_NUMBER_PLAYERS) + 1) + " drew 4 cards" );
                         broadcast("Player " + (currentPlayer + 1) + " selected the color " + selectedColor.getColorCode() + selectedColor + selectedColor.resetCode() + "\n");
                         currentCard = new NumberCard(Type.NUMBER, selectedColor, -1);
 
-                        int nextPlayer = (currentPlayer + 1) % 2;
+                        int nextPlayer = (currentPlayer + 1) % MIN_NUMBER_PLAYERS;
 
                         players.get(nextPlayer).addCard(deck.drawCard());
                         players.get(nextPlayer).addCard(deck.drawCard());
@@ -104,7 +104,7 @@ public class Server {
                     }
                 }
 
-                currentPlayer = (currentPlayer + 1) % 2;
+                currentPlayer = (currentPlayer + 1) % MIN_NUMBER_PLAYERS;
 
             } else if(playedCard == null) {
                 Card drawnCard = deck.drawCard();
@@ -112,7 +112,7 @@ public class Server {
                 player.sendMessage("You drew a card " + drawnCard.coloredString());
                 broadcast("Player " + (currentPlayer + 1) + " drew a card\n");
 
-                currentPlayer = (currentPlayer + 1) % 2;
+                currentPlayer = (currentPlayer + 1) % MIN_NUMBER_PLAYERS;
             } else {
                 player.addCard(playedCard);
                 player.sendMessage("The card you played does not match\n");
