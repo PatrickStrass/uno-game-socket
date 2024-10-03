@@ -78,7 +78,7 @@ public class ClientHandler extends Thread {
     public Color chooseColor() throws IOException {
         sendMessage("Choose a color:");
         sendMessage("Your turn:");
-        String response = input.readLine().toUpperCase();
+        String response = input.readLine().toUpperCase().trim();
         List<Color> colors = new ArrayList<>(Arrays.asList(Color.values()));
 
         if(colors.contains(Color.valueOf(response))) {
