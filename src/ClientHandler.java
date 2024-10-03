@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.concurrent.atomic.AtomicInteger;
 import classes.Card;
 import classes.enums.Color;
 
@@ -15,6 +15,7 @@ public class ClientHandler extends Thread {
     private BufferedReader input;
     private PrintWriter output;
     private List<Card> hand = new ArrayList<>();
+    private static AtomicInteger playerCount = new AtomicInteger(0);
 
     public ClientHandler(Socket socket) throws IOException {
         this.socket = socket;
@@ -25,7 +26,8 @@ public class ClientHandler extends Thread {
     @Override
     public void run() {
         try {
-            output.println("Welcome to Uno\n");
+            playerCount.incrementAndGet();
+            output.println("Welcome to Uno\nYou are player " + playerCount);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -37,10 +39,6 @@ public class ClientHandler extends Thread {
 
     public void getInitialCards(List<Card> cards) {
         hand.addAll(cards);
-
-        // Uncomment this section if you want to see your initial cards when the game starts
-        // sendMessage("Your initial hand:");
-        // showHand();
     }
 
     public void showHand() {
