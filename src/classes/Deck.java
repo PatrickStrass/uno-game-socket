@@ -37,10 +37,6 @@ public class Deck {
         }
 
         Collections.shuffle(cards);
-
-        // for (Card card : cards) {
-        //     System.out.println(card.toString());
-        // }
     }
 
     @Override
@@ -65,8 +61,4 @@ public class Deck {
 
         return initialHand;
     }
-
-    // public static void main(String[] args) {
-    //     new Deck();
-    // }
 }
