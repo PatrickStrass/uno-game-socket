@@ -31,7 +31,7 @@ public class ActionCard extends Card {
             return this.color.equals(numberCard.getColor());
         } else if(card instanceof ActionCard) {
             ActionCard actionCard = (ActionCard) card;
-            return this.color.equals(actionCard.getColor());
+            return this.action.equals(actionCard.action) || this.color.equals(actionCard.color);
         }
         return false; 
     }
