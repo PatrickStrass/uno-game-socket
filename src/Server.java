@@ -16,7 +16,7 @@ import classes.enums.Wild;
 public class Server {
     private static final int PORT = 4000;
     private static final int MIN_NUMBER_PLAYERS = 2;
-    private static int rotationWay = 1; // TODO implement change of rotation when necessary
+    private static int rotationWay = 1;
     private static ArrayList<ClientHandler> players = new ArrayList<>();
     private static Deck deck = new Deck();
 
@@ -60,10 +60,10 @@ public class Server {
 
             if (playedCard != null && playedCard.matches(currentCard)) {
                 currentCard = playedCard;
-                broadcast("Player " + (currentPlayer + 1) + " played " + currentCard.coloredString() + "\n");
+                broadcast("Player " + (currentPlayer + rotationWay) + " played " + currentCard.coloredString() + "\n");
 
                 if(player.hasWon()) {
-                    broadcast("Player " + (currentPlayer + 1) + " has won!");
+                    broadcast("Player " + (currentPlayer + rotationWay) + " has won!");
                     break;
                 } 
 
@@ -71,31 +71,30 @@ public class Server {
                     ActionCard actionCard = (ActionCard) playedCard;
 
                     if(actionCard.getAction().equals(Action.DRAW_2)) {
-                        ClientHandler nextPlayer = players.get((currentPlayer + 1) % MIN_NUMBER_PLAYERS);
-                        broadcast("Player " + (((currentPlayer + 1) % MIN_NUMBER_PLAYERS) + 1) + " drew 2 cards\n");
+                        ClientHandler nextPlayer = players.get((currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS);
+                        broadcast("Player " + (((currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS) + 1) + " drew 2 cards\n");
 
                         nextPlayer.addCard(deck.drawCard());
                         nextPlayer.addCard(deck.drawCard());
                     } else if(actionCard.getAction().equals(Action.REVERSE)) {
-                        //TODO when there is more than two players
-                        // currentCard = new NumberCard(Type.NUMBER, actionCard.getColor(), -1);
+                        rotationWay *= -1;
                     } else if(actionCard.getAction().equals(Action.SKIP)) {
-                        currentPlayer = (currentPlayer + 1) % MIN_NUMBER_PLAYERS; 
+                        currentPlayer = (currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS; 
                     }
                 } else if(playedCard instanceof WildCard) {
                     WildCard wildCard = (WildCard) playedCard;
 
                     if(wildCard.getWild().equals(Wild.WILD)) {
                         Color selectedColor = player.chooseColor();
-                        broadcast("Player " + (currentPlayer + 1) + " selected the color " + selectedColor.getColorCode() + selectedColor + selectedColor.resetCode() + "\n");
+                        broadcast("Player " + (currentPlayer + rotationWay) + " selected the color " + selectedColor.getColorCode() + selectedColor + selectedColor.resetCode() + "\n");
                         currentCard = new NumberCard(Type.NUMBER, selectedColor, -1);
                     } else {
                         Color selectedColor = player.chooseColor();
-                        broadcast("Player " + (((currentPlayer + 1) % MIN_NUMBER_PLAYERS) + 1) + " drew 4 cards" );
-                        broadcast("Player " + (currentPlayer + 1) + " selected the color " + selectedColor.getColorCode() + selectedColor + selectedColor.resetCode() + "\n");
+                        broadcast("Player " + (((currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS) + 1) + " drew 4 cards" );
+                        broadcast("Player " + (currentPlayer + rotationWay) + " selected the color " + selectedColor.getColorCode() + selectedColor + selectedColor.resetCode() + "\n");
                         currentCard = new NumberCard(Type.NUMBER, selectedColor, -1);
 
-                        int nextPlayer = (currentPlayer + 1) % MIN_NUMBER_PLAYERS;
+                        int nextPlayer = (currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS;
 
                         players.get(nextPlayer).addCard(deck.drawCard());
                         players.get(nextPlayer).addCard(deck.drawCard());
@@ -104,7 +103,7 @@ public class Server {
                     }
                 }
 
-                currentPlayer = (currentPlayer + 1) % MIN_NUMBER_PLAYERS;
+                currentPlayer = (currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS;
 
             } else if(playedCard == null) {
                 Card drawnCard = deck.drawCard();
