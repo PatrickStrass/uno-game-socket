@@ -19,6 +19,7 @@ public class Server {
     private static int rotationWay = 1;
     private static ArrayList<ClientHandler> players = new ArrayList<>();
     private static Deck deck = new Deck();
+    private static Deck auxiliaryDeck = new Deck();
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(PORT);
@@ -40,6 +41,8 @@ public class Server {
     }
 
     private static void startGame() throws IOException {
+        deck.createCards();
+
         for (ClientHandler player : players) {
             player.getInitialCards(deck.drawInitialCards());
         }
@@ -59,6 +62,7 @@ public class Server {
             Card playedCard = player.playCard();
 
             if (playedCard != null && playedCard.matches(currentCard)) {
+                auxiliaryDeck.getCards().add(currentCard);
                 currentCard = playedCard;
                 broadcast("Player " + (currentPlayer + rotationWay) + " played " + currentCard.coloredString() + "\n");
 
@@ -105,6 +109,10 @@ public class Server {
                 currentPlayer = ((currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS) == -1 ? players.size() - 1 : (currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS;
 
             } else if(playedCard == null) {
+                if(deck.getCards().isEmpty()) {
+                    deck.setCards(auxiliaryDeck.getCards());
+                }
+
                 Card drawnCard = deck.drawCard();
                 player.addCard(drawnCard); 
                 player.sendMessage("You drew a card " + drawnCard.coloredString());
