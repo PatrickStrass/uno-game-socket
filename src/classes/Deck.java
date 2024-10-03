@@ -12,6 +12,10 @@ public class Deck {
     private List<Card> cards = new ArrayList<>();
 
     public Deck() {
+        
+    }
+
+    public void createCards() {
         for(Color color : Color.values()) {
             for(int i = 0; i < 10; i++) {
                 cards.add(new NumberCard(Type.NUMBER, color, i));
@@ -46,6 +50,12 @@ public class Deck {
 
     public List<Card> getCards() {
         return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        Collections.shuffle(cards);
+
+        this.cards = cards;
     }
     
     public Card drawCard() {
