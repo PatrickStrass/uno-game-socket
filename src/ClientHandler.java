@@ -31,6 +31,10 @@ public class ClientHandler extends Thread {
         }
     }
 
+    public List<Card> getHand() {
+        return hand;
+    }
+
     public void getInitialCards(List<Card> cards) {
         hand.addAll(cards);
 

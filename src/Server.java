@@ -61,10 +61,14 @@ public class Server {
             ClientHandler player = players.get(currentPlayer);
             Card playedCard = player.playCard();
 
+            if(player.getHand().size() == 1) {
+                broadcast("Player " + (currentPlayer + 1) + " said Uno!");
+            }
+
             if (playedCard != null && playedCard.matches(currentCard)) {
                 auxiliaryDeck.getCards().add(currentCard);
                 currentCard = playedCard;
-                broadcast("Player " + (currentPlayer + rotationWay) + " played " + currentCard.coloredString() + "\n");
+                broadcast("Player " + (currentPlayer + 1) + " played " + currentCard.coloredString() + "\n");
 
                 if(player.hasWon()) {
                     broadcast("Player " + (currentPlayer + rotationWay) + " has won!");
@@ -106,7 +110,7 @@ public class Server {
                         players.get(nextPlayer).addCard(deck.drawCard());
                     }
                 }
-                currentPlayer = ((currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS) == -1 ? players.size() - 1 : (currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS;
+                currentPlayer = ((currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS) < 0 ? players.size() - 1 : (currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS;
 
             } else if(playedCard == null) {
                 if(deck.getCards().isEmpty()) {
