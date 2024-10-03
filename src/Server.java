@@ -15,7 +15,7 @@ import classes.enums.Wild;
 
 public class Server {
     private static final int PORT = 4000;
-    private static final int MIN_NUMBER_PLAYERS = 2;
+    private static final int MIN_NUMBER_PLAYERS = 3;
     private static int rotationWay = 1;
     private static ArrayList<ClientHandler> players = new ArrayList<>();
     private static Deck deck = new Deck();
@@ -102,8 +102,7 @@ public class Server {
                         players.get(nextPlayer).addCard(deck.drawCard());
                     }
                 }
-
-                currentPlayer = (currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS;
+                currentPlayer = ((currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS) == -1 ? players.size() - 1 : (currentPlayer + rotationWay) % MIN_NUMBER_PLAYERS;
 
             } else if(playedCard == null) {
                 Card drawnCard = deck.drawCard();
@@ -116,8 +115,6 @@ public class Server {
                 player.addCard(playedCard);
                 player.sendMessage("The card you played does not match\n");
             }
-
-            // currentPlayer = (currentPlayer + 1) % 2;
         }
         closeConnections();
     }
