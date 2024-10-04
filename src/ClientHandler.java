@@ -13,10 +13,13 @@ public class ClientHandler extends Thread {
     private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
+    private String username;
+    private List<ClientHandler> players;
     private List<Card> hand = new ArrayList<>();
 
-    public ClientHandler(Socket socket) throws IOException {
+    public ClientHandler(Socket socket, List<ClientHandler> players) throws IOException {
         this.socket = socket;
+        this.players = players;
         this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.output = new PrintWriter(socket.getOutputStream(), true);
     }
@@ -25,9 +28,46 @@ public class ClientHandler extends Thread {
     public void run() {
         try {
             output.println("Welcome to Uno\n");
-        } catch (Exception e) {
+
+            do {
+                this.username = enterUsername();   
+            } while (usernameAlreadyExists(this.username, players));
+
+            synchronized(players) {
+                players.add(this);
+            }
+
+            Server.checkAndStart();
+        } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String enterUsername() throws IOException {
+        sendMessage("Enter your username: ");
+        username = input.readLine().trim();
+
+        if(username == null || username.isEmpty()) {
+            sendMessage("Invalid username\n");
+            return enterUsername();
+        }
+
+        return username;
+    }
+
+    private boolean usernameAlreadyExists(String username, List<ClientHandler> players) {
+        for(ClientHandler player : players) {
+            if(player.getUsername().equals(username)) {
+                sendMessage("It already exists a player with this username\n");
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public List<Card> getHand() {
