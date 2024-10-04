@@ -20,9 +20,10 @@ public class Client {
         while((serverMessage = input.readLine()) != null) {
             System.out.println(serverMessage);
 
-            if(serverMessage.contains("Your turn:")) {
+            if(serverMessage.contains("Enter") || serverMessage.contains("Choose")) {
                 String playerResponse = console.readLine();
                 output.println(playerResponse);
+                System.out.println("");
             }
         }
 
