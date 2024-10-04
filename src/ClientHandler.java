@@ -4,7 +4,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import classes.Card;
@@ -49,18 +48,12 @@ public class ClientHandler extends Thread {
         }
 
         sendMessage("");
-    }
-
-    public void info() {
-        System.out.println("Player " + socket.getInetAddress() + " has " + hand.size() + " cards left");
-    }   
+    }  
 
     public Card playCard() throws IOException {
         sendMessage("Your hand:");
         showHand();
         sendMessage("Enter a card to play or type 'draw' to draw a card: ");
-
-        sendMessage("Your turn:");
         String response = input.readLine().trim();
 
         if(response.equalsIgnoreCase("draw")) {
@@ -80,17 +73,15 @@ public class ClientHandler extends Thread {
     }
 
     public Color chooseColor() throws IOException {
-        sendMessage("Choose a color:");
-        sendMessage("Your turn:");
+        sendMessage("Choose a color: ");
         String response = input.readLine().toUpperCase().trim();
-        List<Color> colors = new ArrayList<>(Arrays.asList(Color.values()));
 
-        if(colors.contains(Color.valueOf(response))) {
+        try {
             return Color.valueOf(response);
+        } catch (Exception e) {
+            sendMessage("Invalid color\n");
+            return chooseColor();
         }
-    
-        sendMessage("Invalid color\n");
-        return chooseColor();
     }
 
     public void addCard(Card card) {
