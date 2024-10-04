@@ -62,7 +62,7 @@ public class Server {
             Card playedCard = player.playCard();
 
             if(player.getHand().size() == 1) {
-                broadcast("Player " + (currentPlayer + 1) + " said Uno!");
+                broadcast("Player " + (currentPlayer + 1) + " said Uno!\n");
             }
 
             if (playedCard != null && playedCard.matches(currentCard)) {
@@ -71,7 +71,7 @@ public class Server {
                 broadcast("Player " + (currentPlayer + 1) + " played " + currentCard.coloredString() + "\n");
 
                 if(player.hasWon()) {
-                    broadcast("Player " + (currentPlayer + rotationWay) + " has won!");
+                    broadcast("Player " + (currentPlayer + 1) + " has won!");
                     break;
                 } 
 
